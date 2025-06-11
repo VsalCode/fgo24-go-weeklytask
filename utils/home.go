@@ -18,7 +18,9 @@ var HomeInteractive = `
 
 func Home() {
 	manageListMenu()
-	fmt.Printf("menu yg dipilih : %v", cart)
+	fmt.Printf("menu yg dipilih : %v\n", cart)
+	fmt.Printf("list kategori : %v\n", category)
+	fmt.Printf("list kategori yang dipilih : %v\n", choosenCategory)
 
 	fmt.Println(HomeInteractive)
 	fmt.Print("Masukkan pilihan: ")
@@ -26,6 +28,7 @@ func Home() {
 	fmt.Scanln(&choice)
 	switch choice {
 	case "1":
+		choosenCategory = ""
 		chooseMenu()
 	case "2":
 		listCart()
