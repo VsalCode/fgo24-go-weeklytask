@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"strings"
+	"weeklytask-8/data"
 )
 
 var MenuInteractive = `
@@ -19,16 +20,16 @@ var categoryInteractive = `
 ==================================
 `
 
-var cart []ListMenu
+var Cart []data.ListMenu
 
-type Category struct {
-	no       string
+type CategoryStruct struct {
+	no   string
 	name string
 }
 
-var category []Category
+var Category []CategoryStruct
 
-func checkCategory(c1 []Category, c2 string) bool {
+func checkCategory(c1 []CategoryStruct, c2 string) bool {
 	for x := range c1 {
 		if c1[x].name == c2 {
 			return false
@@ -37,75 +38,86 @@ func checkCategory(c1 []Category, c2 string) bool {
 	return true
 }
 
-var choosenCategory string
+var ChoosenCategory string
 
-func chooseMenu()  {
-	defer menu()
+func ChooseMenu(dataParams *[]data.ListMenu) {
+	defer clear()
 
-	fmt.Print(categoryInteractive)
-	for x, menu := range listMenu {
+	data := *dataParams
 
-		if len(category) == 0 {
-			category = append(category, Category{
-				no:       fmt.Sprintf("%d", x + 1),
-				name: menu.category,
+	for x, menu := range data {
+
+		if len(Category) == 0 {
+			Category = append(Category, CategoryStruct{
+				no:   fmt.Sprintf("%d", x+1),
+				name: menu.Category,
 			})
 		}
 
-		if checkCategory(category, menu.category) {
-			category = append(category, Category{
-				no:       fmt.Sprintf("%d", x),
-				name: menu.category,
+		if checkCategory(Category, menu.Category) {
+			Category = append(Category, CategoryStruct{
+				no:   fmt.Sprintf("%d", x),
+				name: menu.Category,
 			})
 		}
 	}
 
-	for c, item := range category {
+	for c, item := range Category {
 		fmt.Printf("| %d. %s\n", c+1, item.name)
 	}
 
 	fmt.Print("==================================\n")
-	fmt.Print("Pilih Kategori: ")
+	fmt.Print("\nPilih Kategori: ")
 	var choose string
 	fmt.Scanln(&choose)
-	
+
 	var result string
 
-	for y := range category {
-		if (choose == category[y].no ){
-			result = category[y].name
-		} 
+	for y := range Category {
+		if choose == Category[y].no {
+			result = Category[y].name
+		}
+		if choose != Category[y].no {
+				fmt.Println("Opsi tidak ditemukan!")
+				return
+			}
 	}
 
-	choosenCategory = result
+	ChoosenCategory = result
+	
 }
 
-func menu() []ListMenu {
-	defer Home()
-	
+func Menu(dataParams *[]data.ListMenu) {
+	defer clear()
+
+	listMenu := *dataParams
+
 	fmt.Print(MenuInteractive)
 	for i := range listMenu {
-		if listMenu[i].category == choosenCategory {
-			fmt.Printf("| %d | %s | %d\n", i+1, listMenu[i].name, listMenu[i].price)
+		if listMenu[i].Category == ChoosenCategory {
+			fmt.Printf("| %d | %s | %d\n", i+1, listMenu[i].Name, listMenu[i].Price)
 		}
-		
+
+		if listMenu[i].Category != ChoosenCategory {
+			fmt.Println("Opsi tidak ditemukan!")
+			return
+		}
 	}
 	fmt.Println("==================================")
-	fmt.Print("Masukkan Pilihan : ")
+	fmt.Print("\nMasukkan Pilihan : ")
 	var choice string
 	fmt.Scanln(&choice)
 
 	for x := range listMenu {
-		true := strings.Contains(choice, listMenu[x].no)
+		true := strings.Contains(choice, listMenu[x].No)
 		if true {
-			cart = append(cart, ListMenu{
-				no: listMenu[x].no,
-				name:     listMenu[x].name,
-				price:    listMenu[x].price,
-				category: listMenu[x].category,
+			Cart = append(Cart, data.ListMenu{
+				No:       listMenu[x].No,
+				Name:     listMenu[x].Name,
+				Price:    listMenu[x].Price,
+				Category: listMenu[x].Category,
 			})
 		}
 	}
 
-	return cart
 }
