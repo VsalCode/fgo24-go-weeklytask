@@ -23,15 +23,15 @@ var categoryInteractive = `
 var Cart []data.ListMenu
 
 type CategoryStruct struct {
-	no   string
-	name string
+	No   string
+	Name string
 }
 
 var Category []CategoryStruct
 
 func checkCategory(c1 []CategoryStruct, c2 string) bool {
 	for x := range c1 {
-		if c1[x].name == c2 {
+		if c1[x].Name == c2 {
 			return false
 		}
 	}
@@ -49,42 +49,40 @@ func ChooseMenu(dataParams *[]data.ListMenu) {
 
 		if len(Category) == 0 {
 			Category = append(Category, CategoryStruct{
-				no:   fmt.Sprintf("%d", x+1),
-				name: menu.Category,
+				No:   fmt.Sprintf("%d", x+1),
+				Name: menu.Category,
 			})
 		}
 
 		if checkCategory(Category, menu.Category) {
 			Category = append(Category, CategoryStruct{
-				no:   fmt.Sprintf("%d", x),
-				name: menu.Category,
+				No:   fmt.Sprintf("%d", x),
+				Name: menu.Category,
 			})
 		}
 	}
 
 	for c, item := range Category {
-		fmt.Printf("| %d. %s\n", c+1, item.name)
+		fmt.Printf("| %d. %s\n", c+1, item.Name)
 	}
 
 	fmt.Print("==================================\n")
-	fmt.Print("\nPilih Kategori: ")
+	fmt.Print("Pilih Kategori: ")
 	var choose string
 	fmt.Scanln(&choose)
 
 	var result string
 
 	for y := range Category {
-		if choose == Category[y].no {
-			result = Category[y].name
+
+		if choose == Category[y].No {
+			result = Category[y].Name
 		}
-		if choose != Category[y].no {
-				fmt.Println("Opsi tidak ditemukan!")
-				return
-			}
+
 	}
 
 	ChoosenCategory = result
-	
+
 }
 
 func Menu(dataParams *[]data.ListMenu) {
@@ -96,20 +94,17 @@ func Menu(dataParams *[]data.ListMenu) {
 	for i := range listMenu {
 		if listMenu[i].Category == ChoosenCategory {
 			fmt.Printf("| %d | %s | %d\n", i+1, listMenu[i].Name, listMenu[i].Price)
-		}
-
-		if listMenu[i].Category != ChoosenCategory {
-			fmt.Println("Opsi tidak ditemukan!")
-			return
-		}
+		} 
 	}
 	fmt.Println("==================================")
-	fmt.Print("\nMasukkan Pilihan : ")
+	// fmt.Println(listMenu)
+	fmt.Print("Masukkan Pilihan : ")
 	var choice string
 	fmt.Scanln(&choice)
 
 	for x := range listMenu {
 		true := strings.Contains(choice, listMenu[x].No)
+		
 		if true {
 			Cart = append(Cart, data.ListMenu{
 				No:       listMenu[x].No,

@@ -22,11 +22,13 @@ var DataMenu []data.ListMenu
 
 func main() {
 	data.ManageListMenu(&DataMenu)
-	fmt.Printf("menu yg dipilih : %v\n", utils.Cart)
-	fmt.Printf("list kategori : %v\n", utils.Category)
-	fmt.Printf("list kategori yang dipilih : %v\n", utils.ChoosenCategory)
-
+	
 	for {
+		fmt.Printf("menu yg dipilih : %v\n", utils.Cart)
+		fmt.Printf("list kategori : %v\n", utils.Category)
+		fmt.Printf("list kategori yang dipilih : %v\n", utils.ChoosenCategory)
+		fmt.Printf("total harga : %v\n", utils.CalculateTotal)
+
 		fmt.Println(HomeInteractive)
 		fmt.Print("Masukkan pilihan: ")
 		var choice string
@@ -38,7 +40,7 @@ func main() {
 		case "2":
 			utils.ListCart()
 		case "3":
-			utils.Checkout()
+			utils.Checkout(utils.CalculateTotal)
 		case "0":
 			os.Exit(0)
 		default:
