@@ -41,10 +41,11 @@ func checkCategory(c1 []CategoryStruct, c2 string) bool {
 var ChoosenCategory string
 
 func ChooseMenu(dataParams *[]data.ListMenu) {
-	defer clear()
+	fmt.Print("\033[H\033[2J")
 
 	data := *dataParams
 
+	fmt.Print(categoryInteractive)
 	for x, menu := range data {
 
 		if len(Category) == 0 {
@@ -86,7 +87,7 @@ func ChooseMenu(dataParams *[]data.ListMenu) {
 }
 
 func Menu(dataParams *[]data.ListMenu) {
-	defer clear()
+	fmt.Print("\033[H\033[2J")
 
 	listMenu := *dataParams
 

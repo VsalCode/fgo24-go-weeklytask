@@ -33,6 +33,7 @@ var failedPaymentInteractive = `
 `
 
 func Checkout(total int) {
+	fmt.Print("\033[H\033[2J")
 
 	fmt.Print(checkoutInteractive)
 	fmt.Printf("\nTotal yang akan dibayarkan: %d\n", total)
@@ -50,6 +51,7 @@ func Checkout(total int) {
 }
 
 func payment(total int) {
+	fmt.Print("\033[H\033[2J")
 
 	if CalculateTotal == 0 || Cart == nil {
 		fmt.Print(failedPaymentInteractive)

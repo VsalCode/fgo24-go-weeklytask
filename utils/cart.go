@@ -12,7 +12,7 @@ var CalculateTotal int
 
 
 func ListCart() {
-	defer clear()	
+	fmt.Print("\033[H\033[2J")
 
 	CalculateTotal = 0
 
@@ -27,7 +27,7 @@ func ListCart() {
 	}
 	
 	for name, total := range totalByName {
-		fmt.Printf("%s | total item: %d\n", name, total)
+		fmt.Printf("> %s | total item: %d\n", name, total)
 	}  
 	fmt.Printf("\nTotal Harga: %d\n", CalculateTotal)
 	fmt.Println("=========================")
