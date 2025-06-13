@@ -1,30 +1,66 @@
 package utils
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
+	"weeklytask-8/data"
+)
 
-var searchInteractive = `
-=========================================
-|  	          CARI MENU 🔎             	|
-=========================================
-| 1. Cari Berdasarkan Nama              |
-| 2. Cari Berdasarkan Kategori          |
-| 3. Lihat Berdasarkan Rating Tertinggi |
-| 4. Lihat Berdasarkan Harga Termurah   |
-=========================================
-`
-
-func Search() {
+func Search(dataParams *[]data.ListMenu) {
 	fmt.Print("\033[H\033[2J")
 
-	fmt.Print(searchInteractive)
-	fmt.Print("Pilih Menu : ")
-	var choice string
-	fmt.Scanln(&choice)
-	switch choice {
-		case "1":
-		case "2":
-		case "3":
-		default :
-			return
+	data := *dataParams
+
+	fmt.Println("*ketik nama item atau nama menu yang anda ingin cari")
+
+	scanner := bufio.NewScanner(os.Stdin)
+	fmt.Print("\ncari item 🔎 : ")
+	scanner.Scan()
+	input := scanner.Text()
+
+	if input != "" {
+		handleSearch(input, data)
+		} else {
+		input = "false"
+		handleSearch(input, data)
 	}
+}
+
+func handleSearch(input string, dataParams []data.ListMenu) {
+
+	data := dataParams
+
+	fmt.Println("\nHasil Pencarian :")
+
+	status := 1
+	for x := range data {
+		true := strings.Contains(strings.ToLower(data[x].Name), strings.ToLower(input))
+		if true {
+			status = 0
+			fmt.Printf("> %s\n", data[x].Name)
+		} else if input == "false" {
+			status = 1
+		}
+	}
+
+	if status == 1 {
+		fmt.Println("❌Item Tidak Ditemukkan🔎❌")
+		fmt.Printf("\nKetik 0 untuk melakukan pencarian kembali...")
+		fmt.Printf("\nEnter untuk kembali ke home...")
+		} else {
+		fmt.Printf("\nKetik 0 untuk melakukan pencarian kembali...")
+		fmt.Printf("\nEnter untuk kembali ke home dan pesan di list menu...")
+	}
+
+	var action string
+	fmt.Scanln(&action)
+	switch action {
+	case "0":
+		Search(&dataParams)
+	default:
+		return
+	}
+
 }

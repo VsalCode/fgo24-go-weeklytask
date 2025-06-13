@@ -3,20 +3,21 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 	"weeklytask-8/data"
 	"weeklytask-8/utils"
 )
 
 var HomeInteractive = `
-=====================
-|      WELCOME      |
-=====================
-| 1. List Menu 📜   |
-| 2. Cari Menu 🔎   |
-| 3. Keranjang 🛒   |
-| 4. Checkout 💸    |
-| 0. Exit ❌        |
-=====================        
+=========================
+| WELCOME WARTEG BAHARI |
+=========================
+| 1. List Menu 📜       |
+| 2. Cari Menu 🔎       |
+| 3. Keranjang 🛒       |
+| 4. Checkout 💸        |
+| 0. Exit ❌            |
+=========================        
 `
 
 var DataMenu []data.ListMenu
@@ -24,13 +25,18 @@ var DataMenu []data.ListMenu
 func main() {
 	data.ManageListMenu(&DataMenu)
 
+	fmt.Print("Masukkan Nama Anda: ")
+	var greet string
+	fmt.Scanln(&greet)
+
 	for {
 		fmt.Print("\033[H\033[2J")
-		fmt.Printf("menu yg dipilih : %v\n", utils.Cart)
-		fmt.Printf("list kategori : %v\n", utils.Category)
-		fmt.Printf("list kategori yang dipilih : %v\n", utils.ChoosenCategory)
-		fmt.Printf("total harga : %v\n", utils.CalculateTotal)
+		// fmt.Printf("menu yg dipilih : %v\n", utils.Cart)
+		// fmt.Printf("list kategori : %v\n", utils.Category)
+		// fmt.Printf("list kategori yang dipilih : %v\n", utils.ChoosenCategory)
+		// fmt.Printf("total harga : %v\n", utils.CalculateTotal)
 
+		fmt.Printf("Halo %s 😄🖐 !\n", strings.ToUpper(greet))
 		fmt.Println(HomeInteractive)
 		fmt.Print("Masukkan pilihan: ")
 		var choice string
@@ -40,12 +46,13 @@ func main() {
 			utils.ChooseMenu(&DataMenu)
 			utils.Menu(&DataMenu)
 		case "2":
-			utils.Search()
+			utils.Search(&DataMenu)
 		case "3":
 			utils.ListCart()
 		case "4":
 			utils.Checkout(utils.CalculateTotal)
 		case "0":
+			fmt.Printf("See You Again %s 😥 🖐 !", greet)
 			os.Exit(0)
 		default:
 			fmt.Println("Invalid choice!")
