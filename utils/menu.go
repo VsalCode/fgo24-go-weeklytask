@@ -46,18 +46,17 @@ func ChooseMenu(dataParams *[]data.ListMenu) {
 	data := *dataParams
 
 	fmt.Print(categoryInteractive)
-	for x, menu := range data {
-
+	for _, menu := range data {
 		if len(Category) == 0 {
 			Category = append(Category, CategoryStruct{
-				No:   fmt.Sprintf("%d", x+1),
+				No:   "1",
 				Name: menu.Category,
 			})
 		}
 
 		if checkCategory(Category, menu.Category) {
 			Category = append(Category, CategoryStruct{
-				No:   fmt.Sprintf("%d", x),
+				No:   fmt.Sprintf("%d", len(Category)+1),
 				Name: menu.Category,
 			})
 		}
@@ -73,17 +72,13 @@ func ChooseMenu(dataParams *[]data.ListMenu) {
 	fmt.Scanln(&choose)
 
 	var result string
-
 	for y := range Category {
-
 		if choose == Category[y].No {
 			result = Category[y].Name
 		}
-
 	}
 
 	ChoosenCategory = result
-
 }
 
 func Menu(dataParams *[]data.ListMenu) {
@@ -95,18 +90,16 @@ func Menu(dataParams *[]data.ListMenu) {
 	for i := range listMenu {
 		if listMenu[i].Category == ChoosenCategory {
 			fmt.Printf("| %d | %s | %d\n", i+1, listMenu[i].Name, listMenu[i].Price)
-		} 
+		}
 	}
 	fmt.Println("==================================")
-	// fmt.Println(listMenu)
 	fmt.Print("Masukkan Pilihan : ")
 	var choice string
 	fmt.Scanln(&choice)
 
 	for x := range listMenu {
-		true := strings.Contains(choice, listMenu[x].No)
-		
-		if true {
+		isMatch := strings.Contains(choice, listMenu[x].No)
+		if isMatch {
 			Cart = append(Cart, data.ListMenu{
 				No:       listMenu[x].No,
 				Name:     listMenu[x].Name,
@@ -115,5 +108,4 @@ func Menu(dataParams *[]data.ListMenu) {
 			})
 		}
 	}
-
 }

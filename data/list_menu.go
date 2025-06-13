@@ -1,55 +1,46 @@
 package data
 
+import (
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+)
+
 type ListMenu struct {
-	No string
+	No       string 
 	Name     string
 	Price    int
 	Category string
 }
 
-var editData []ListMenu
+func fetchData(c chan []ListMenu) {
+
+	res, err := http.Get("https://raw.githubusercontent.com/VsalCode/go-weeklytask-data/refs/heads/main/data.json")
+	if err != nil {
+		fmt.Println("failed to fetch!")
+	}
+	
+	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		fmt.Println("failed to fetch!")
+	}
+
+
+	var data []ListMenu
+	json.Unmarshal([]byte(body), &data)
+
+	c <- data
+}
 
 func ManageListMenu(data *[]ListMenu) {
 
-	editData = []ListMenu{
-		{
-			No: "1",
-			Name:     "Nasi Padang",
-			Price:    12000,
-			Category: "food",
-		},
-		{
-			No: "2",
-			Name:     "Fried Chicken",
-			Price:    7000,
-			Category: "food",
-		},
-		{
-			No: "3",
-			Name:     "Matcha",
-			Price:    7000,
-			Category: "drink",
-		},
-		{
-			No: "4",
-			Name:     "Fried Rice",
-			Price:    15000,
-			Category: "food",
-		},
-		{
-			No: "5",
-			Name:     "Ice Tea",
-			Price:    5000,
-			Category: "drink",
-		},
-		{
-			No: "6",
-			Name:     "Coffee",
-			Price:    10000,
-			Category: "drink",
-		},
-	}
-
-	*data = editData
+	
+	channel := make(chan []ListMenu)
+	
+	go fetchData(channel)
+	
+	*data = <-channel
 	// fmt.Println(data)
+	defer close(channel)
 }
