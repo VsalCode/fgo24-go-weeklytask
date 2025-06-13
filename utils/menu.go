@@ -2,7 +2,6 @@ package utils
 
 import (
 	"fmt"
-	"strings"
 	"weeklytask-8/data"
 )
 
@@ -28,6 +27,7 @@ type CategoryStruct struct {
 }
 
 var Category []CategoryStruct
+var ChoosenCategory string
 
 func checkCategory(c1 []CategoryStruct, c2 string) bool {
 	for x := range c1 {
@@ -38,11 +38,10 @@ func checkCategory(c1 []CategoryStruct, c2 string) bool {
 	return true
 }
 
-var ChoosenCategory string
+var Status bool
 
 func ChooseMenu(dataParams *[]data.ListMenu) {
 	fmt.Print("\033[H\033[2J")
-
 	data := *dataParams
 
 	fmt.Print(categoryInteractive)
@@ -72,15 +71,35 @@ func ChooseMenu(dataParams *[]data.ListMenu) {
 	fmt.Scanln(&choose)
 
 	var result string
+	notExist := "false"
+
 	for y := range Category {
-		if choose == Category[y].No {
+		exist := Category[y].No == choose
+
+		if exist {
 			result = Category[y].Name
+			notExist = "false"
+			break
+		}
+		notExist = "true"
+	}
+
+	Status = true
+	if notExist == "true" {
+		fmt.Print("Pilihan tidak ada❌, enter untuk kembali ke home..")
+		var invalid string
+		fmt.Scanln(&invalid)
+		switch invalid {
+		default:
+			Status = false
+			return
 		}
 	}
 
 	ChoosenCategory = result
 }
 
+	
 func Menu(dataParams *[]data.ListMenu) {
 	fmt.Print("\033[H\033[2J")
 
@@ -95,17 +114,35 @@ func Menu(dataParams *[]data.ListMenu) {
 	fmt.Println("==================================")
 	fmt.Print("Masukkan Pilihan : ")
 	var choice string
-	fmt.Scanln(&choice)
+	fmt.Scanln(&choice) 
+
+	notExist := "false"
 
 	for x := range listMenu {
-		isMatch := strings.Contains(choice, listMenu[x].No)
-		if isMatch {
-			Cart = append(Cart, data.ListMenu{
-				No:       listMenu[x].No,
-				Name:     listMenu[x].Name,
-				Price:    listMenu[x].Price,
-				Category: listMenu[x].Category,
-			})
+		if listMenu[x].Category == ChoosenCategory {
+			isMatch := choice == listMenu[x].No
+			if isMatch {
+				Cart = append(Cart, data.ListMenu{
+					No:       listMenu[x].No,
+					Name:     listMenu[x].Name,
+					Price:    listMenu[x].Price,
+					Category: listMenu[x].Category,
+				})
+				notExist = "false"
+				break
+			}
+			notExist = "true"
+		}
+
+	}
+
+	if notExist == "true" {
+		fmt.Print("Pilihan tidak ada❌, enter untuk kembali ke home..")
+		var invalid string
+		fmt.Scanln(&invalid)
+		switch invalid {
+		default:
+			return
 		}
 	}
 }

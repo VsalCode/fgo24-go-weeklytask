@@ -44,7 +44,9 @@ func main() {
 		switch choice {
 		case "1":
 			utils.ChooseMenu(&DataMenu)
-			utils.Menu(&DataMenu)
+			if utils.Status {
+				utils.Menu(&DataMenu)
+			}
 		case "2":
 			utils.Search(&DataMenu)
 		case "3":

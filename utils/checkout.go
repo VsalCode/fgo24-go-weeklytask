@@ -2,9 +2,7 @@ package utils
 
 import (
 	"fmt"
-	"os"
 	"strings"
-	"weeklytask-8/data"
 )
 
 var checkoutInteractive = `
@@ -15,20 +13,14 @@ var checkoutInteractive = `
 
 var paymentInteractive = `
 ==============================================
-| PAYMENT SUCCESS! ✅💸                      |
-==============================================
-| "1" untuk kembali                          |
-| "0" untuk keluar dari program              |
+| 💸 PAYMENT SUCCESS! ✅                      |
 ==============================================
 `
 
 var failedPaymentInteractive = `
 ==============================================
-| PAYMENT FAILED! ❌💸                       |
+| 💸 PAYMENT FAILED! ❌                       |
 | anda belum memasukkan apapun ke keranjang! |
-==============================================
-| "1" untuk kembali                          |
-| "0" untuk keluar dari program              |
 ==============================================
 `
 
@@ -57,36 +49,23 @@ func payment(total int) {
 		fmt.Print(failedPaymentInteractive)
 		fmt.Printf("Total yang anda dibayarkan: %d\n", total)
 		fmt.Println("==============================================")
-		fmt.Printf("\nPilih Menu:")
+		fmt.Printf("\nEnter untuk kembali ke home...")
 		var choice2 string
 		fmt.Scanln(&choice2)
-		switch strings.ToLower(choice2) {
-		case "1":
-			return
-		case "0":
-			os.Exit(0)
+		switch choice2 {
 		default:
 			return
 		}
-		return
 	}
 
 	fmt.Print(paymentInteractive)
 	fmt.Printf("Total yang anda dibayarkan: %d\n", total)
 	fmt.Println("==============================================")
-	fmt.Printf("\nPilih Menu:")
+	fmt.Printf("\nEnter untuk kembali ke home...")
 	var choice string
 	fmt.Scanln(&choice)
-	switch strings.ToLower(choice) {
-	case "1":
-		CalculateTotal = 0
-		Cart = []data.ListMenu{}
-		return
-	case "0":
-		os.Exit(0)
+	switch choice {
 	default:
-		CalculateTotal = 0
-		Cart = []data.ListMenu{}
 		return
 	}
 }
