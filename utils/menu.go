@@ -144,5 +144,13 @@ func Menu(dataParams *[]data.ListMenu) {
 		default:
 			return
 		}
+	} else {
+		fmt.Print("Berhasil ditambahkan ✅ , enter untuk kembali dan lihat keranjang mu..")
+		var invalid string
+		fmt.Scanln(&invalid)
+		switch invalid {
+		default:
+			return
+		}
 	}
 }

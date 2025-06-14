@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"strings"
+	"weeklytask-8/data"
 )
 
 var checkoutInteractive = `
@@ -13,13 +14,13 @@ var checkoutInteractive = `
 
 var paymentInteractive = `
 ==============================================
-| 💸 PAYMENT SUCCESS! ✅                      |
+| 💸 PAYMENT SUCCESS! ✅                     |
 ==============================================
 `
 
 var failedPaymentInteractive = `
 ==============================================
-| 💸 PAYMENT FAILED! ❌                       |
+| 💸 PAYMENT FAILED! ❌                      |
 | anda belum memasukkan apapun ke keranjang! |
 ==============================================
 `
@@ -28,12 +29,23 @@ func Checkout(total int) {
 	fmt.Print("\033[H\033[2J")
 
 	fmt.Print(checkoutInteractive)
+
+	fmt.Println("Item anda saat ini:")
+
+	if len(Cart) != 0 {
+		for x, item := range DataHistory {
+			fmt.Printf("[%d]. %s | total item: %d | Total Harga: %d\n", x+1, item.Name, item.Total, item.Price)
+		}
+	}
+
 	fmt.Printf("\nTotal yang akan dibayarkan: %d\n", total)
 	fmt.Println("Anda yakin ingin melanjutkan pembayaran? (YA/tidak)")
 	var choice string
 	fmt.Scanln(&choice)
 	switch strings.ToLower(choice) {
 	case "ya":
+		Cart = []data.ListMenu{}
+		TransactionHistory = append(TransactionHistory, DataHistory)
 		payment(total)
 	case "tidak":
 		return
