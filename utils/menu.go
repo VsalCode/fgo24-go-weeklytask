@@ -133,7 +133,6 @@ func Menu(dataParams *[]data.ListMenu) {
 			}
 			notExist = "true"
 		}
-
 	}
 
 	if notExist == "true" {

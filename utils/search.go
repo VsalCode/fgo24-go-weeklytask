@@ -22,7 +22,7 @@ func Search(dataParams *[]data.ListMenu) {
 
 	if input != "" {
 		handleSearch(input, data)
-		} else {
+	} else {
 		input = "false"
 		handleSearch(input, data)
 	}
@@ -30,16 +30,19 @@ func Search(dataParams *[]data.ListMenu) {
 
 func handleSearch(input string, dataParams []data.ListMenu) {
 
-	data := dataParams
+	listMenu := dataParams
 
 	fmt.Println("\nHasil Pencarian :")
 
+	var resultSearch []data.ListMenu
+
 	status := 1
-	for x := range data {
-		true := strings.Contains(strings.ToLower(data[x].Name), strings.ToLower(input))
+	for x := range listMenu {
+		true := strings.Contains(strings.ToLower(listMenu[x].Name), strings.ToLower(input))
 		if true {
 			status = 0
-			fmt.Printf("> %s\n", data[x].Name)
+			resultSearch = append(resultSearch, listMenu[x])
+			fmt.Printf("[ ID Menu: %s ] %s \n",listMenu[x].No, listMenu[x].Name)
 		} else if input == "false" {
 			status = 1
 		}
@@ -49,9 +52,35 @@ func handleSearch(input string, dataParams []data.ListMenu) {
 		fmt.Println("❌Item Tidak Ditemukkan🔎❌")
 		fmt.Printf("\nKetik 0 untuk melakukan pencarian kembali...")
 		fmt.Printf("\nEnter untuk kembali ke home...")
+	} else {
+		// fmt.Printf("ini result serach: %v", resultSearch)
+		fmt.Print("\n Ketik ID Menu untuk ditambahkan ke keranjang: ")
+
+		var input string
+		fmt.Scanln(&input)
+		isOnTheList := true
+		for x := range resultSearch {
+			isMatch := input == resultSearch[x].No
+			if !isMatch {
+				isOnTheList = false
+				break
+			}
+			Cart = append(Cart, data.ListMenu{
+				No:       resultSearch[x].No,
+				Name:     resultSearch[x].Name,
+				Price:    resultSearch[x].Price,
+				Category: resultSearch[x].Category,
+			})
+		}
+		
+		if isOnTheList {
+			fmt.Println("Data Berhasil Ditambahkan ✅ ")
 		} else {
+			fmt.Print("❌ Input Tidak Valid!")
+		}
+		
 		fmt.Printf("\nKetik 0 untuk melakukan pencarian kembali...")
-		fmt.Printf("\nEnter untuk kembali ke home dan pesan di list menu...")
+		fmt.Printf("\nEnter untuk kembali ke home...")
 	}
 
 	var action string

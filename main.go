@@ -9,16 +9,16 @@ import (
 )
 
 var HomeInteractive = `
-===============================
-| 🥣 WELCOME TO WARTEG BAHARI |
-===============================
-| 1. List Menu 📜             |
-| 2. Cari Menu 🔎             |
-| 3. Keranjang 🛒             |
-| 4. Checkout 💸              |
-| 5. History Transaction 📋   |
-| 0. Exit ❌                  |
-===============================        
+================================
+| 🥣 WELCOME TO WARTEG BAHARI  |
+================================
+| 1. List Menu by Category 📜  |
+| 2. Cari Menu 🔎              |
+| 3. Keranjang 🛒              |
+| 4. Checkout 💸               |
+| 5. History Transaction 📋    |
+| 0. Exit ❌                   |
+================================        
 `
 
 var DataMenu []data.ListMenu
@@ -29,14 +29,14 @@ func main() {
 	fmt.Print("Masukkan Nama Anda: ")
 	var greet string
 	fmt.Scanln(&greet)
-
+	
 	for {
 		fmt.Print("\033[H\033[2J")
 		// fmt.Printf("menu yg dipilih : %v\n", utils.Cart)
 		// fmt.Printf("list kategori : %v\n", utils.Category)
 		// fmt.Printf("list kategori yang dipilih : %v\n", utils.ChoosenCategory)
 		// fmt.Printf("total harga : %v\n", utils.CalculateTotal)
-
+		
 		fmt.Printf("Halo %s 😄 🖐 !\n", strings.ToUpper(greet))
 		fmt.Println(HomeInteractive)
 		fmt.Print("Masukkan pilihan: ")
