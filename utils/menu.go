@@ -9,7 +9,7 @@ var MenuInteractive = `
 ==================================
 | LIST MENU
 ==================================
-| no produk | nama produk | harga
+| ID produk | nama produk | harga
 ==================================
 `
 
@@ -66,7 +66,7 @@ func ChooseMenu(dataParams *[]data.ListMenu) {
 	}
 
 	fmt.Print("==================================\n")
-	fmt.Print("Pilih Kategori: ")
+	fmt.Printf("Pilih Kategori [%s - %d] : ", Category[0].No, len(Category) )
 	var choose string
 	fmt.Scanln(&choose)
 
@@ -106,13 +106,13 @@ func Menu(dataParams *[]data.ListMenu) {
 	listMenu := *dataParams
 
 	fmt.Print(MenuInteractive)
-	for i := range listMenu {
-		if listMenu[i].Category == ChoosenCategory {
-			fmt.Printf("| %d | %s | %d\n", i+1, listMenu[i].Name, listMenu[i].Price)
+	for _, item := range listMenu {
+		if item.Category == ChoosenCategory {
+			fmt.Printf("| %s | %s | %d\n", item.No, item.Name, item.Price)
 		}
 	}
 	fmt.Println("==================================")
-	fmt.Print("Masukkan Pilihan : ")
+	fmt.Print("Pilih Menu [ ID Produk ] : ")
 	var choice string
 	fmt.Scanln(&choice) 
 

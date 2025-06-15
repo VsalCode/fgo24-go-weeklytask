@@ -54,7 +54,7 @@ func handleSearch(input string, dataParams []data.ListMenu) {
 		fmt.Printf("\nEnter untuk kembali ke home...")
 	} else {
 		// fmt.Printf("ini result serach: %v", resultSearch)
-		fmt.Print("\n Ketik ID Menu untuk ditambahkan ke keranjang: ")
+		fmt.Print("\n Ketik ID produk untuk ditambahkan ke keranjang: ")
 
 		var input string
 		fmt.Scanln(&input)

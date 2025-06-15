@@ -12,11 +12,12 @@ var HomeInteractive = `
 ================================
 | 🥣 WELCOME TO WARTEG BAHARI  |
 ================================
-| 1. List Menu by Category 📜  |
-| 2. Cari Menu 🔎              |
-| 3. Keranjang 🛒              |
-| 4. Checkout 💸               |
-| 5. History Transaction 📋    |
+| 1. Show All Menu 🍴          |
+| 2. List Menu by Category 📜  |
+| 3. Cari Menu 🔎              |
+| 4. Lihat Keranjang 🛒        |
+| 5. Checkout 💸               |
+| 6. History Transaction 📋    |
 | 0. Exit ❌                   |
 ================================        
 `
@@ -44,17 +45,19 @@ func main() {
 		fmt.Scanln(&choice)
 		switch choice {
 		case "1":
+			utils.AllMenu(&DataMenu)
+		case "2":
 			utils.ChooseMenu(&DataMenu)
 			if utils.Status {
 				utils.Menu(&DataMenu)
 			}
-		case "2":
-			utils.Search(&DataMenu)
 		case "3":
-			utils.ListCart()
+			utils.Search(&DataMenu)
 		case "4":
-			utils.Checkout(utils.CalculateTotal)
+			utils.ListCart()
 		case "5":
+			utils.Checkout(utils.CalculateTotal)
+		case "6":
 			utils.History()
 		case "0":
 			fmt.Printf("See You Again %s 😥 🖐 !", greet)
