@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"strings"
 	"weeklytask-8/data"
 )
 
@@ -13,54 +14,64 @@ var allMenuUI = `
 ==============================================
 `
 
-
 func AllMenu(dataParams *[]data.ListMenu) {
 	listMenu := *dataParams
+	itemsPerPage := 5
+	totalItems := len(listMenu)
+	totalPages := (totalItems + itemsPerPage - 1) / itemsPerPage 
+	currentPage := 0
 
-	fmt.Print(allMenuUI)
-	for _, item := range listMenu {
-		fmt.Printf("%s | %s | %d | %s\n", item.No, item.Name, item.Price, item.Category)
-	}
+	for {
+		fmt.Print("\033[H\033[2J") 
+		fmt.Print(allMenuUI)
 
-	fmt.Println("==================================")
-	fmt.Printf("\nMasukkan Pilihan [%s - %d] : ", listMenu[0].No, len(listMenu))
-	var choice string
-	fmt.Scanln(&choice)
+		start := currentPage * itemsPerPage
+		end := start + itemsPerPage
+		if end > totalItems {
+			end = totalItems
+		}
 
-	notExist := "false"
+		for i := start; i < end; i++ {
+			item := listMenu[i]
+			fmt.Printf("%s | %s | %d | %s\n", item.No, item.Name, item.Price, item.Category)
+		}
 
-	for x := range listMenu {
-		if listMenu[x].Category == ChoosenCategory {
-			isMatch := choice == listMenu[x].No
-			if isMatch {
-				Cart = append(Cart, data.ListMenu{
-					No:       listMenu[x].No,
-					Name:     listMenu[x].Name,
-					Price:    listMenu[x].Price,
-					Category: listMenu[x].Category,
-				})
-				notExist = "false"
-				break
+		fmt.Println("==============================================")
+		fmt.Printf("Page %d of %d\n", currentPage+1, totalPages)
+		fmt.Println("[p = previous] [n = next] [Tambahkan ID ke keranjang] [q to back to home]")
+		fmt.Print("Masukkan Pilihan: ")
+
+		var choice string
+		fmt.Scanln(&choice)
+		choice = strings.ToLower(choice)
+
+		switch choice {
+		case "n":
+			if currentPage < totalPages-1 {
+				currentPage++
 			}
-			notExist = "true"
-		}
-	}
-
-	if notExist == "true" {
-		fmt.Print("Pilihan tidak ada❌, enter untuk kembali ke home..")
-		var invalid string
-		fmt.Scanln(&invalid)
-		switch invalid {
-		default:
+			continue
+		case "p":
+			if currentPage > 0 {
+				currentPage--
+			}
+			continue
+		case "q":
 			return
-		}
-	} else {
-		fmt.Print("Berhasil ditambahkan ✅ , enter untuk kembali dan lihat keranjang mu..")
-		var invalid string
-		fmt.Scanln(&invalid)
-		switch invalid {
 		default:
-			return
+			for _, item := range listMenu {
+				if choice == item.No {
+					Cart = append(Cart, data.ListMenu{
+						No:       item.No,
+						Name:     item.Name,
+						Price:    item.Price,
+						Category: item.Category,
+					})
+					fmt.Printf("Menambahkan %s ke Keranjang ✅ , enter untuk kembali ke home...", item.Name)
+					fmt.Scanln()
+					break
+				}
+			}
 		}
 	}
 }
