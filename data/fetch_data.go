@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"sync"
 )
 
 type ListMenu struct {
@@ -14,7 +15,8 @@ type ListMenu struct {
 	Category string
 }
 
-func fetchData(c chan []ListMenu) {
+func fetchData(c chan []ListMenu, wg *sync.WaitGroup) {
+	defer wg.Done()
 
 	res, err := http.Get("https://raw.githubusercontent.com/VsalCode/go-weeklytask-data/refs/heads/main/data.json")
 	if err != nil {
@@ -26,7 +28,6 @@ func fetchData(c chan []ListMenu) {
 		fmt.Println("failed to fetch!")
 	}
 
-
 	var data []ListMenu
 	json.Unmarshal([]byte(body), &data)
 
@@ -35,12 +36,14 @@ func fetchData(c chan []ListMenu) {
 
 func ManageListMenu(data *[]ListMenu) {
 
-	
+	wg := sync.WaitGroup{}
 	channel := make(chan []ListMenu)
 	
-	go fetchData(channel)
+	wg.Add(1)
+	go fetchData(channel, &wg)
 	
 	*data = <-channel
-	// fmt.Println(data)
+	wg.Wait()
+
 	defer close(channel)
 }

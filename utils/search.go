@@ -28,7 +28,7 @@ func Search(dataParams *[]data.ListMenu) {
 	}
 }
 
-func handleSearch(input string, dataParams []data.ListMenu) {
+func handleSearch(inputParams string, dataParams []data.ListMenu) {
 
 	listMenu := dataParams
 
@@ -38,12 +38,12 @@ func handleSearch(input string, dataParams []data.ListMenu) {
 
 	status := 1
 	for x := range listMenu {
-		true := strings.Contains(strings.ToLower(listMenu[x].Name), strings.ToLower(input))
+		true := strings.Contains(strings.ToLower(listMenu[x].Name), strings.ToLower(inputParams))
 		if true {
 			status = 0
 			resultSearch = append(resultSearch, listMenu[x])
-			fmt.Printf("[ ID Menu: %s ] %s \n",listMenu[x].No, listMenu[x].Name)
-		} else if input == "false" {
+			fmt.Printf("[ ID Menu: %s ] %s \n", listMenu[x].No, listMenu[x].Name)
+		} else if inputParams == "false" {
 			status = 1
 		}
 	}
@@ -53,32 +53,35 @@ func handleSearch(input string, dataParams []data.ListMenu) {
 		fmt.Printf("\nKetik 0 untuk melakukan pencarian kembali...")
 		fmt.Printf("\nEnter untuk kembali ke home...")
 	} else {
-		// fmt.Printf("ini result serach: %v", resultSearch)
+		fmt.Printf("ini result serach: %v", resultSearch)
 		fmt.Print("\n Ketik ID produk untuk ditambahkan ke keranjang: ")
 
-		var input string
-		fmt.Scanln(&input)
-		isOnTheList := true
+		var chooseItem string
+		fmt.Scanln(&chooseItem)
+		var isOnTheList string
+		
 		for x := range resultSearch {
-			isMatch := input == resultSearch[x].No
-			if !isMatch {
-				isOnTheList = false
+			isMatch := resultSearch[x].No == chooseItem
+			if isMatch {
+				Cart = append(Cart, data.ListMenu{
+					No:       resultSearch[x].No,
+					Name:     resultSearch[x].Name,
+					Price:    resultSearch[x].Price,
+					Category: resultSearch[x].Category,
+				})
+				isOnTheList = "true"
 				break
 			}
-			Cart = append(Cart, data.ListMenu{
-				No:       resultSearch[x].No,
-				Name:     resultSearch[x].Name,
-				Price:    resultSearch[x].Price,
-				Category: resultSearch[x].Category,
-			})
+			isOnTheList = "false"
+			// break
 		}
-		
-		if isOnTheList {
+
+		if isOnTheList == "true" {
 			fmt.Println("Data Berhasil Ditambahkan ✅ ")
 		} else {
 			fmt.Print("❌ Input Tidak Valid!")
 		}
-		
+
 		fmt.Printf("\nKetik 0 untuk melakukan pencarian kembali...")
 		fmt.Printf("\nEnter untuk kembali ke home...")
 	}
