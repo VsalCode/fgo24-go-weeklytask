@@ -2,70 +2,43 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"strings"
 	"weeklytask-8/data"
+	"weeklytask-8/menu"
 	"weeklytask-8/utils"
 )
 
-var HomeInteractive = `
-================================
-| 🥣 WELCOME TO WARTEG BAHARI  |
-================================
-| 1. Show All Menu 🍴          |
-| 2. List Menu by Category 📜  |
-| 3. Cari Menu 🔎              |
-| 4. Lihat Keranjang 🛒        |
-| 5. Checkout 💸               |
-| 6. History Transaction 📋    |
-| 0. Exit ❌                   |
-================================        
-`
-
-var DataMenu []data.ListMenu
-
 func main() {
-	data.ManageListMenu(&DataMenu)
-
-	fmt.Print("Masukkan Nama Anda: ")
-	var greet string
-	fmt.Scanln(&greet)
+	fmt.Println("Loading menu data...")
+	listMenu := data.ManageListMenu()
+	
+	if len(listMenu) == 0 {
+		fmt.Println("❌ Gagal memuat data menu. Aplikasi akan keluar.")
+		return
+	}
 	
 	for {
-		fmt.Print("\033[H\033[2J")
-		// fmt.Printf("menu yg dipilih : %v\n", utils.Cart)
-		// fmt.Printf("list kategori : %v\n", utils.Category)
-		// fmt.Printf("list kategori yang dipilih : %v\n", utils.ChoosenCategory)
-		// fmt.Printf("total harga : %v\n", utils.CalculateTotal)
+		utils.ClearScreen()
+		fmt.Print(utils.HomeUI)
 		
-		fmt.Printf("Halo %s 😄 🖐 !\n", strings.ToUpper(greet))
-		fmt.Println(HomeInteractive)
-		fmt.Print("Masukkan pilihan: ")
-		var choice string
-		fmt.Scanln(&choice)
+		choice := utils.GetInput("Pilih menu [1-5]: ")
+		
 		switch choice {
 		case "1":
-			utils.AllMenu(&DataMenu)
+			menu.ShowAllMenu(listMenu)
 		case "2":
-			utils.ChooseMenu(&DataMenu)
-			if utils.Status {
-				utils.Menu(&DataMenu)
-			}
+			menu.ShowCategoryMenu(listMenu)
 		case "3":
-			utils.Search(&DataMenu)
+			menu.SearchMenu(listMenu)
 		case "4":
-			utils.ListCart()
+			menu.ShowCart()
 		case "5":
-			utils.Checkout(utils.CalculateTotal)
-		case "6":
-			utils.History()
+			menu.ShowHistory()
 		case "0":
-			fmt.Printf("See You Again %s 😥 🖐 !", greet)
-			os.Exit(0)
-		default:
-			fmt.Println("Invalid choice!")
+			fmt.Println("Terima kasih telah menggunakan aplikasi kami! 👋")
 			return
+		default:
+			fmt.Println("❌ Pilihan tidak valid!")
+			utils.WaitForEnter("Tekan Enter untuk kembali...")
 		}
 	}
-
 }

@@ -6,44 +6,47 @@ import (
 	"io"
 	"net/http"
 	"sync"
+	"weeklytask-8/models"
 )
 
-type ListMenu struct {
-	No       string 
-	Name     string
-	Price    int
-	Category string
-}
-
-func fetchData(c chan []ListMenu, wg *sync.WaitGroup) {
+func fetchData(c chan []models.ListMenu, wg *sync.WaitGroup) {
 	defer wg.Done()
 
 	res, err := http.Get("https://raw.githubusercontent.com/VsalCode/go-weeklytask-data/refs/heads/main/data.json")
 	if err != nil {
-		fmt.Println("failed to fetch!")
+		fmt.Println("Failed to fetch data:", err)
+		c <- []models.ListMenu{}
+		return
 	}
-	
+	defer res.Body.Close()
+
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
-		fmt.Println("failed to fetch!")
+		fmt.Println("Failed to read response body:", err)
+		c <- []models.ListMenu{}
+		return
 	}
 
-	var data []ListMenu
-	json.Unmarshal([]byte(body), &data)
+	var data []models.ListMenu
+	if err := json.Unmarshal(body, &data); err != nil {
+		fmt.Println("Failed to parse JSON:", err)
+		c <- []models.ListMenu{}
+		return
+	}
 
 	c <- data
 }
 
-func ManageListMenu(data *[]ListMenu) {
-
+func ManageListMenu() []models.ListMenu {
 	wg := sync.WaitGroup{}
-	channel := make(chan []ListMenu)
+	channel := make(chan []models.ListMenu)
 	
 	wg.Add(1)
 	go fetchData(channel, &wg)
 	
-	*data = <-channel
+	data := <-channel
 	wg.Wait()
-
-	defer close(channel)
+	close(channel)
+	
+	return data
 }
