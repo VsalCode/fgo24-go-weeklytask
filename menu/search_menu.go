@@ -5,6 +5,7 @@ import (
 	"strings"
 	"sync"
 	"weeklytask-8/models"
+	"weeklytask-8/services"
 	"weeklytask-8/utils"
 )
 
@@ -54,7 +55,7 @@ func handleSearch(query string, listMenu []models.ListMenu) {
 	found := false
 	for _, item := range results {
 		if item.No == choice {
-			utils.AddToCart(item)
+			services.AddToCart(item)
 			found = true
 			break
 		}

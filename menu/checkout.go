@@ -3,6 +3,7 @@ package menu
 import (
 	"fmt"
 	"weeklytask-8/models"
+	"weeklytask-8/services"
 	"weeklytask-8/utils"
 )
 
@@ -28,8 +29,8 @@ func ShowCheckout(total int, historyData []models.HistoryItem) {
 	choice := utils.GetInputLower("")
 	switch choice {
 	case "ya":
-		utils.AddToHistory(historyData)
-		utils.ClearCart()
+		services.AddToHistory(historyData)
+		services.ClearCart()
 		showPaymentSuccess(total)
 	case "tidak":
 		return

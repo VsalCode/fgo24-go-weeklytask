@@ -3,6 +3,7 @@ package menu
 import (
 	"fmt"
 	"weeklytask-8/models"
+	"weeklytask-8/services"
 	"weeklytask-8/utils"
 )
 
@@ -30,7 +31,7 @@ func ShowAllMenu(listMenu []models.ListMenu) {
 		fmt.Println("==============================================")
 		fmt.Printf("Page %d of %d\n", currentPage+1, totalPages)
 		fmt.Println("[p = previous] [n = next] [Tambahkan ID ke keranjang] [q to back to home]")
-		
+
 		choice := utils.GetInputLower("Masukkan Pilihan: ")
 
 		switch choice {
@@ -55,7 +56,7 @@ func ShowAllMenu(listMenu []models.ListMenu) {
 func addItemToCart(itemID string, listMenu []models.ListMenu) bool {
 	for _, item := range listMenu {
 		if itemID == item.No {
-			utils.AddToCart(item)
+			services.AddToCart(item)
 			return true
 		}
 	}

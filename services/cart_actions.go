@@ -1,4 +1,4 @@
-package utils
+package services
 
 import (
 	"weeklytask-8/models"

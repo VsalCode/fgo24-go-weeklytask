@@ -2,21 +2,22 @@ package menu
 
 import (
 	"fmt"
+	"weeklytask-8/services"
 	"weeklytask-8/utils"
 )
 
-func ShowCart()  {
+func ShowCart() {
 	utils.ClearScreen()
 	fmt.Print(utils.ListCartUI)
 
-	historyData := utils.GroupCartItems()
-	total := utils.CalculateCartTotal()
+	historyData := services.GroupCartItems()
+	total := services.CalculateCartTotal()
 
 	if len(historyData) == 0 {
 		fmt.Println("Keranjang kosong!")
 	} else {
 		for i, item := range historyData {
-			fmt.Printf("[%d]. %s | total item: %d | Total Harga: %d\n", 
+			fmt.Printf("[%d]. %s | total item: %d | Total Harga: %d\n",
 				i+1, item.Name, item.Total, item.Price)
 		}
 	}
@@ -34,6 +35,6 @@ func ShowCart()  {
 	case "1":
 		ShowCheckout(total, historyData)
 	default:
-		return 
+		return
 	}
 }

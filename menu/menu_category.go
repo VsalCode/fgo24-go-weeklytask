@@ -3,14 +3,15 @@ package menu
 import (
 	"fmt"
 	"weeklytask-8/models"
+	"weeklytask-8/services"
 	"weeklytask-8/utils"
 )
 
 func ShowCategoryMenu(listMenu []models.ListMenu) {
 	utils.ClearScreen()
-	
+
 	categories := getUniqueCategories(listMenu)
-	
+
 	fmt.Print(utils.HistoryUI)
 	for i, category := range categories {
 		fmt.Printf("| %d. %s\n", i+1, category.Name)
@@ -38,7 +39,7 @@ func ShowCategoryMenu(listMenu []models.ListMenu) {
 func getUniqueCategories(listMenu []models.ListMenu) []models.Category {
 	categoryMap := make(map[string]bool)
 	var categories []models.Category
-	
+
 	counter := 1
 	for _, menu := range listMenu {
 		if !categoryMap[menu.Category] {
@@ -50,7 +51,7 @@ func getUniqueCategories(listMenu []models.ListMenu) []models.Category {
 			counter++
 		}
 	}
-	
+
 	return categories
 }
 
@@ -63,14 +64,14 @@ func showMenuByCategory(listMenu []models.ListMenu, category string) {
 			fmt.Printf("| %s | %s | %d\n", item.No, item.Name, item.Price)
 		}
 	}
-	
+
 	fmt.Println("==================================")
 	choice := utils.GetInput("Pilih Menu [ ID Produk ] : ")
 
 	found := false
 	for _, item := range listMenu {
 		if item.Category == category && choice == item.No {
-			utils.AddToCart(item)
+			services.AddToCart(item)
 			found = true
 			break
 		}
