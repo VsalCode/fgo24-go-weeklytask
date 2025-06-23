@@ -9,7 +9,7 @@ import (
 
 func ShowAllMenu(params *[]models.ListMenu) {
 	listMenu := *params
-	
+
 	itemsPerPage := 5
 	totalItems := len(listMenu)
 	totalPages := (totalItems + itemsPerPage - 1) / itemsPerPage
@@ -19,14 +19,8 @@ func ShowAllMenu(params *[]models.ListMenu) {
 		utils.ClearScreen()
 		fmt.Print(utils.AllMenuUI)
 
-		start := currentPage * itemsPerPage
-		end := start + itemsPerPage
-		if end > totalItems {
-			end = totalItems
-		}
-
-		for i := start; i < end; i++ {
-			item := listMenu[i]
+		pageMenu := services.PaginateMenu(listMenu, currentPage, itemsPerPage)
+		for _, item := range pageMenu {
 			fmt.Printf("%s | %s | %d | %s\n", item.No, item.Name, item.Price, item.Category)
 		}
 
