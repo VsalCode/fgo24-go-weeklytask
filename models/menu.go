@@ -6,3 +6,5 @@ type ListMenu struct {
 	Price    int    `json:"price"`
 	Category string `json:"category"`
 }
+
+var MenuList []ListMenu

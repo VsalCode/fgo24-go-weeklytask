@@ -37,16 +37,17 @@ func fetchData(c chan []models.ListMenu, wg *sync.WaitGroup) {
 	c <- data
 }
 
-func ManageListMenu() []models.ListMenu {
-	wg := sync.WaitGroup{}
-	channel := make(chan []models.ListMenu)
-	
-	wg.Add(1)
-	go fetchData(channel, &wg)
-	
-	data := <-channel
-	wg.Wait()
-	close(channel)
-	
-	return data
+func ManageListMenu() {
+    wg := sync.WaitGroup{}
+    channel := make(chan []models.ListMenu)
+
+    wg.Add(1)
+    go fetchData(channel, &wg)
+
+		fmt.Println("loading...")
+    data := <-channel 
+
+		wg.Wait()         
+
+    models.MenuList = data
 }

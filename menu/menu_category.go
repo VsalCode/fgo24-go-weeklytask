@@ -7,8 +7,10 @@ import (
 	"weeklytask-8/utils"
 )
 
-func ShowCategoryMenu(listMenu []models.ListMenu) {
+func ShowCategoryMenu(params *[]models.ListMenu) {
 	utils.ClearScreen()
+
+	listMenu := *params
 
 	categories := getUniqueCategories(listMenu)
 

@@ -9,8 +9,10 @@ import (
 	"weeklytask-8/utils"
 )
 
-func SearchMenu(listMenu []models.ListMenu) {
+func SearchMenu(params *[]models.ListMenu) {
 	utils.ClearScreen()
+
+	listMenu := *params
 
 	fmt.Println("*ketik nama item atau nama menu yang anda ingin cari")
 	input := utils.GetInput("\ncari item 🔎 : ")
@@ -42,7 +44,7 @@ func handleSearch(query string, listMenu []models.ListMenu) {
 
 	if len(results) == 0 {
 		fmt.Println("❌Item Tidak Ditemukkan🔎❌")
-		handleSearchAction(query, listMenu)
+		handleSearchAction(&listMenu)
 		return
 	}
 
@@ -67,7 +69,7 @@ func handleSearch(query string, listMenu []models.ListMenu) {
 		fmt.Print("❌ Input Tidak Valid!")
 	}
 
-	handleSearchAction(query, listMenu)
+	handleSearchAction(&listMenu)
 }
 
 func searchResults(query string, listMenu []models.ListMenu, resultChan chan []models.ListMenu) {
@@ -82,7 +84,7 @@ func searchResults(query string, listMenu []models.ListMenu, resultChan chan []m
 	resultChan <- results
 }
 
-func handleSearchAction(query string, listMenu []models.ListMenu) {
+func handleSearchAction(listMenu *[]models.ListMenu) {
 	fmt.Printf("\nKetik 0 untuk melakukan pencarian kembali...")
 	fmt.Printf("\nEnter untuk kembali ke home...")
 	

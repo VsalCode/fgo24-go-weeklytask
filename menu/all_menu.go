@@ -7,7 +7,9 @@ import (
 	"weeklytask-8/utils"
 )
 
-func ShowAllMenu(listMenu []models.ListMenu) {
+func ShowAllMenu(params *[]models.ListMenu) {
+	listMenu := *params
+	
 	itemsPerPage := 5
 	totalItems := len(listMenu)
 	totalPages := (totalItems + itemsPerPage - 1) / itemsPerPage
