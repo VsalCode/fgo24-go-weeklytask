@@ -29,8 +29,8 @@ func ShowCheckout(total int, historyData []models.HistoryItem) {
 	choice := utils.GetInputLower("")
 	switch choice {
 	case "ya":
-		services.AddToHistory(historyData)
-		services.ClearCart()
+		services.ManageCart.AddToHistory(historyData)
+		services.ManageCart.ClearCart()
 		showPaymentSuccess(total)
 	case "tidak":
 		return

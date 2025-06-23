@@ -57,7 +57,7 @@ func handleSearch(query string, listMenu []models.ListMenu) {
 	found := false
 	for _, item := range results {
 		if item.No == choice {
-			services.AddToCart(item)
+			services.ManageCart.AddToCart(item)
 			found = true
 			break
 		}

@@ -10,8 +10,8 @@ func ShowCart() {
 	utils.ClearScreen()
 	fmt.Print(utils.ListCartUI)
 
-	historyData := services.GroupCartItems()
-	total := services.CalculateCartTotal()
+	historyData := services.ManageCart.GroupCartItems()
+	total := services.ManageCart.CalculateCartTotal()
 
 	if len(historyData) == 0 {
 		fmt.Println("Keranjang kosong!")

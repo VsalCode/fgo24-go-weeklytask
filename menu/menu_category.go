@@ -73,7 +73,7 @@ func showMenuByCategory(listMenu []models.ListMenu, category string) {
 	found := false
 	for _, item := range listMenu {
 		if item.Category == category && choice == item.No {
-			services.AddToCart(item)
+			services.ManageCart.AddToCart(item)
 			found = true
 			break
 		}

@@ -10,10 +10,12 @@ func ShowHistory() {
 	utils.ClearScreen()
 	fmt.Print(utils.HistoryUI)
 
-	if len(services.TransactionHistory) == 0 {
+	cartMgr := services.ManageCart.(*services.CartManager)
+
+	if len(cartMgr.TransactionHistory) == 0 {
 		fmt.Println("Belum ada History Transaksi 😯 !")
 	} else {
-		for i, transaction := range services.TransactionHistory {
+		for i, transaction := range cartMgr.TransactionHistory{
 			fmt.Printf("Transaksi [%d]:\n", i+1)
 			fmt.Println("Detail Item yang dibeli:")
 			for _, item := range transaction {

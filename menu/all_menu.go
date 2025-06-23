@@ -52,7 +52,7 @@ func ShowAllMenu(params *[]models.ListMenu) {
 func addItemToCart(itemID string, listMenu []models.ListMenu) bool {
 	for _, item := range listMenu {
 		if itemID == item.No {
-			services.AddToCart(item)
+			services.ManageCart.AddToCart(item)
 			return true
 		}
 	}
